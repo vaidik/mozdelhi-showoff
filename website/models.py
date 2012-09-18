@@ -6,11 +6,13 @@ db = SQLAlchemy(app)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True)
+    username = db.Column(db.String(10), unique=True)
     name = db.Column(db.String(120))
 
-    def __init__(self, email, name):
+    def __init__(self, email, username, name):
         self.email = email
         self.name = name
+        self.username = username
 
     def __repr__(self):
         return '<User %r>' % self.email
@@ -34,7 +36,6 @@ class Badge(db.Model):
     description = db.Column(db.String(128))
     version = db.Column(db.String(50))
     criteria = db.Column(db.String(200))
-    #evidence = db.Column(db.String(200))
 
     # PNG Image only
     image = db.Column(db.String(200), unique=True)

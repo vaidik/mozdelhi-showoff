@@ -1,5 +1,6 @@
 from app import app
 
+from flask import abort
 from flask import g
 from flask import redirect
 from flask import request
@@ -63,10 +64,11 @@ def register():
     if session.get('register', None) is not True:
         return redirect(url_for('login'))
 
+    username = request.form['username']
     name = request.form['name']
     email = request.form['email']
 
-    new_user = User(email, name)
+    new_user = User(email, username, name)
     db.session.add(new_user)
     db.session.commit()
 
@@ -80,14 +82,29 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-@app.route('/badges')
-def badges(status=True):
-    earned_badges = EarnedBadge.query.filter_by(user=g.user, status=status)
+@app.route('/profile/earned-badges')
+def badges(user=None, status=True):
+    if user is None:
+        user = g.user
+    earned_badges = EarnedBadge.query.filter_by(user=user, status=status)
     return render_template('badges.html', badges=earned_badges, status=status)
 
-@app.route('/badges/pending')
+@app.route('/profile/<username>/earned-badges')
+def user_badges(username):
+    user = User.query.filter_by(username=username).first()
+    return badges(user=user)
+
+@app.route('/profile/earned-badges/pending')
 def badges_pending():
     return badges(status=False)
+
+@app.route('/profile/<username>/earned-badges/pending')
+def user_badges_bending(username):
+    if username != g.user.username:
+        abort(400)
+
+    user = User.query.filter_by(username=username).first()
+    return badges(user=user, status=False)
 
 @app.route('/profile')
 def profile_me():
