@@ -60,7 +60,7 @@
         <div id="user">
         {% if g.user.is_authenticated() %}
           <ul>
-            <li>Howdy, <strong>{{ g.user.name }}</strong></li>
+            <li>Howdy, <strong><a href="/profile">{{ g.user.first_name }}</a>!</strong></li>
             <li><a href="/logout">Logout</a></li>
           </ul>
         {% else %}
@@ -73,6 +73,7 @@
       </header>
 
       <div class="content">
+      <h2 id="page-title">{% block page_title %}{% endblock %}</h2>
       {% block content %}
       {% endblock %}
       </div>

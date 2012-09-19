@@ -37,11 +37,12 @@ input, select, textarea { font-family: inherit; font-size: 100%; }
 .dtstart, .dtend, .published, .updated { border: 0; }
 img, video { max-width: 100%; height: auto; }
 iframe { max-width: 100%; }
+td, th { text-align: left; }
 
 #page { width: 90%; margin: 0 auto; background: #fff none !important; }
 
 body {
-    font: 16px/1.5 Georgia, "Times New Roman", Times, serif;
+    font: 16px/1.5 "Open Sans Light", Georgia, serif;
     color: #000;
     background: #fff;
     word-wrap: break-word;
@@ -57,7 +58,7 @@ h1, h2, h3, h4, h5, h6 {
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.75);
 }
 h1 { font-size: 3em; letter-spacing: -2px; }
-h2 { font-size: 2em; letter-spacing: -1px; }
+h2 { font-size: 2.5em; letter-spacing: -1px; }
 h3 { font-size: 1.75em; letter-spacing: -0.5px; }
 h4 { font-size: 1.5em; letter-spacing: -0.25px; }
 h5 { font-size: 1.125em; }
@@ -69,14 +70,17 @@ a:hover, a:focus, a:active { color: #20679E; text-decoration: underline; }
 .page {
     margin: 0;
     padding: 0;
-    background: #fff url(/static/img/background.png) 0 0 repeat-x;
+    background: #F6F6F6 url(/static/img/background.png) 0 0 repeat-x;
     border-top: 2px solid #fff;
 }
+
+#page-title { margin-bottom: 10px; }
 
 .wrap {
     position: relative;
     width: 896px;
     padding: 0 48px;
+    padding-bottom: 50px;
     margin: auto;
 }
 
@@ -90,6 +94,10 @@ a:hover, a:focus, a:active { color: #20679E; text-decoration: underline; }
     position: relative;
     padding: 72px 0 48px;
     margin: 0;
+}
+
+#masthead h2 {
+    font-size: 1.8em;
 }
 
 #site-title {
@@ -143,7 +151,7 @@ input[type=email]:focus, input[type=url]:focus, input[type=search]:focus, input[
     box-shadow: inset rgba(0,0,0,0.3) 0 0 4px, rgba(255,255,255, 0.1) 0 1px 0;
 }
 
-input[type=submit], button { 
+input[type=submit], button, .button, .button:visited { 
   border-radius: .25em; 
   box-shadow: 0 2px 0 0 rgba(0,0,0,0.1),inset 0 -2px 0 0 rgba(0,0,0,0.2);
   color: #fff;
@@ -164,7 +172,7 @@ input[type=submit], button {
   -o-transition: all linear .25s;
   transition: all linear .25s;
 }
-input[type=submit]:hover, input[type=submit]:focus, button:hover, button:focus { box-shadow:0 2px 0 0 rgba(0,0,0,0.1),inset 0 -2px 0 0 rgba(0,0,0,0.2),inset 0 12px 24px 2px #3089d8; }
+input[type=submit]:hover, input[type=submit]:focus, button:hover, button:focus, .button:hover { box-shadow:0 2px 0 0 rgba(0,0,0,0.1),inset 0 -2px 0 0 rgba(0,0,0,0.2),inset 0 12px 24px 2px #3089d8; color: #fff; text-decoration: none; }
 
 label { display: block; padding: 0 0 .5em; font: 1em/1.2 "Open Sans Light", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif; }
 label .note { color: #666; }
@@ -239,3 +247,15 @@ input:-moz-placeholder { text-transform: uppercase; }
     height: 140px;
     width: 140px;
 }
+
+/* Profile Styles */
+.profile {
+    font-size: 1.1em;
+}
+
+.profile { margin: 16px 0; }
+.profile tbody { margin-bottom: 30px; border-bottom: 1px dotted gray; }
+.profile th { padding-right: 30px; }
+.profile p { margin: 0 }
+#about th,td { vertical-align: top; padding: 10px 0; }
+#profile-edit-button { display: block; margin-top: -40px; margin-left: 270px; }

@@ -1,8 +1,6 @@
 {% extends "inc/layout.html" %}
 
-{% block content %}
-<section id="badges">
-  {% for b in badges %}
+{% macro print_badge(b, status) %}
   <article class="row" data-slug="{{ b.slug }}">
     <div class="logo-links">
       <div class="project_image_wrap">
@@ -23,11 +21,17 @@
       {% endif %}
     </div>
   </article>
+{% endmacro %}
+
+{% block content %}
+<section id="badges">
+  {% for b in badges %}
+    {{ print_badge(b, status) }}
   {% endfor %}
 </section>
 
 {% if status == False %}
-<!--<script src="http://beta.openbadges.org/issuer.js"></script>-->
+<script src="http://beta.openbadges.org/issuer.js"></script>
 <script type="text/javascript">
 function accept_badge(slug) {
   OpenBadges.issue(

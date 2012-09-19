@@ -1,0 +1,58 @@
+{% extends "inc/layout.html" %}
+
+{% block page_title %}{{ user.first_name }} {{ user.last_name }}{% endblock %}
+
+{% block content %}
+{% if g.user.is_authenticated() and user.username == g.user.username %}
+<div id="profile-edit-button"><a class="button" href="/profile/edit">Edit</a></div>
+{% endif %}
+<table class="profile">
+    {% if g.user.is_authenticated() %}
+    <tbody>
+        <tr>
+            <th>Email</th>
+            <td>{{ user.email }}</td>
+        </tr>
+    </tbody>
+    {% endif %}
+    <tbody>
+        <tr>
+            <th>Username</th>
+            <td>{{ user.username }}</td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <th>IRC Nick</th>
+            <td>{{ user.irc_nick }}</td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <th>Website</th>
+            <td>{{ user.website }}</td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <th>Github</th>
+            <td>http://github.com/{{ user.github }}</td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr id="about">
+            <th>About</th>
+            <td><p>{{ user.about }}</p></td>
+        </tr>
+    </tbody>
+</table>
+<h3>Achievements</h3>
+{% from 'macros.html' import print_badge %}
+{% if badges == None %}
+<p>No badges achieved yet.</p>
+{% else %}
+{% for b in badges %}
+  {{ print_badge(b, status) }}
+{% endfor %}
+{% endif %}
+{% endblock %}

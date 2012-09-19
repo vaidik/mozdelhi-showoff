@@ -9,6 +9,7 @@ from flask import request
 from flask import session
 from flask import url_for
 from flask.ext.login import current_user
+from flask.ext.login import login_required
 from flask.ext.login import login_user
 from flask.ext.login import logout_user
 from flask.ext.login import LoginManager
@@ -34,8 +35,11 @@ def load_user(email):
 def home():
     return render_template('index.html')
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+
     if g.user is not None and g.user.is_authenticated():
         return redirect(url_for('home'))
 
@@ -54,27 +58,38 @@ def login():
             login_user(user)
         else:
             session['register'] = True
-            return render_template('register.html', email=body['email'])
+            session['email'] = body['email']
+            return redirect('/register')
     else:
         return 'some error occurred'
 
     return redirect('/')
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    if session.get('register', None) is not True:
+    if not session.get('register', None):
         return redirect(url_for('login'))
 
-    username = request.form['username']
-    name = request.form['name']
-    email = request.form['email']
+    if request.method == 'GET':
+        return render_template('edit_profile.html', email=session['email'])
 
-    new_user = User(email, username, name)
+    username = request.form['username']
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    irc_nick = request.form['irc_nick']
+    website = request.form['website']
+    github = request.form['github']
+    email = request.form['email']
+    about = request.form['about']
+
+    new_user = User(email, username, first_name, last_name, about, irc_nick,
+                    website, github)
     db.session.add(new_user)
     db.session.commit()
 
     login_user(new_user)
     del session['register']
+    del session['email']
 
     return redirect('/')
 
@@ -120,11 +135,28 @@ def user_badges_bending(username):
 
 @app.route('/profile')
 def profile_me():
-    return profile('asd')
+    return profile(current_user.username)
+
+@app.route('/profile/edit', methods=['GET', 'POST'])
+def profile_edit():
+    if request.method == 'GET':
+        return render_template('edit_profile.html', email=g.user.email)
+
+    g.user.username = request.form['username']
+    g.user.first_name = request.form['first_name']
+    g.user.last_name = request.form['last_name']
+    g.user.about = request.form['about']
+    g.user.website = request.form['website']
+    g.user.github = request.form['github']
+    g.user.irc_nick = request.form['irc_nick']
+    db.session.commit()
+    return redirect('/profile')
 
 @app.route('/profile/<username>')
 def profile(username):
-    return 'profile of %s' % username
+    u = User.query.filter_by(username=username).first()
+    eb = EarnedBadge.query.filter_by(user=u, status=False).all()
+    return render_template('view_profile.html', user=u, badges=eb)
 
 @app.route('/people_search')
 def people_search(term):

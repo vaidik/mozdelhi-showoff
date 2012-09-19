@@ -10,12 +10,23 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True)
     username = db.Column(db.String(10), unique=True)
-    name = db.Column(db.String(120))
+    first_name = db.Column(db.String(20))
+    last_name = db.Column(db.String(20))
+    irc_nick = db.Column(db.String(20))
+    website = db.Column(db.String(100))
+    github = db.Column(db.String(30))
+    about = db.Column(db.Text)
 
-    def __init__(self, email, username, name):
+    def __init__(self, email, username, first_name, last_name, about,
+                 irc_nick=None, website=None, github=None):
         self.email = email
-        self.name = name
+        self.first_name = first_name
+        self.last_name = last_name
         self.username = username
+        self.about = about
+        self.irc_nick = irc_nick
+        self.website = website
+        self.github = github
 
     def __repr__(self):
         return '<User %r>' % self.email

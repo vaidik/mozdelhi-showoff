@@ -1,0 +1,22 @@
+{% macro print_badge(b, status) %}
+  <article class="row" data-slug="{{ b.slug }}">
+    <div class="logo-links">
+      <div class="project_image_wrap">
+        <img src="{{ b.badge.image }}" alt="{{ b.badge.name }}" class="project_image">
+      </div>
+      <ul>
+        <li><a class="icon icon-link" href="{{ b.badge.criteria }}">Criteria</a></li>
+        {% if b.badge.evidence %}
+        <li><a class="icon icon-link" href="{{ b.badge.evidence }}">Evidence</a></li>
+        {% endif %}
+      </ul>
+    </div>
+    <div class="description">
+      <h2><a href="{{ b.badge.criteria }}">{{ b.badge.name }}</a></h2>
+      <p>{{ b.badge.description }}</p>
+      {% if status == False %}
+      <button class="accept-badge" onclick="accept_badge('{{ b.slug }}')">Take It</button> &nbsp; <a href="#" class="decline-badge">Leave It</a>
+      {% endif %}
+    </div>
+  </article>
+{% endmacro %}

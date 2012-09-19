@@ -1,0 +1,67 @@
+{% extends "inc/layout.html" %}
+
+{% block page_title %}
+{% if request.path == '/profile/edit' %}
+Edit Profile
+{% else %}
+Registration
+{% endif %}
+{% endblock %}
+
+{% macro input_text(name=None, value="") -%}
+{% set val = '' %}
+{% if request.path == '/profile/edit' %}
+{% set val = value %}
+{% endif %}
+<input type="text" name="{{ name }}" value="{{ val }}">
+{%- endmacro %}
+
+{% block content %}
+
+{% if request.path == '/profile/edit' %}
+{% set about = g.user.about %}
+{% set submit = "Save" %}
+{% else %}
+{% set about = "" %}
+{% set submit = "Complete Registration" %}
+{% endif %}
+
+<form action="{{ request.path }}" class="registration-form" method="post">
+  <label for="email">Email</label>
+  {{ email }}
+  <input type="hidden" name="email" value="{{ email }}">
+  <p></p>
+
+  <label for="username">Username <span>(required)</span></label>
+  {{ input_text(name="username", value=g.user.username) }}
+  <p></p>
+
+  <hr>
+
+  <label for="first_name">First Name <span>(required)</span></label>
+  {{ input_text(name="first_name", value=g.user.first_name) }}
+  <p></p>
+  
+  <label for="last_name">Last Name <span>(required)</span></label>
+  {{ input_text(name="last_name", value=g.user.last_name) }}
+  <p></p>
+  
+  <label for="about">About</label>
+  <textarea type="text" name="about">{{ about }}</textarea>
+  <p></p>
+  
+  <label for="irc_nick">IRC Nick</label>
+  {{ input_text(name="irc_nick", value=g.user.irc_nick) }}
+  <p></p>
+  
+  <label for="website">Website</label>
+  {{ input_text(name="website", value=g.user.website) }}
+  <p></p>
+  
+  <label for="github">Github</label>
+  http://github.com/{{ input_text(name="github", value=g.user.github) }}
+  <p></p>
+  
+  <input type="submit" value="{{ submit }}">
+</form>
+{% endblock %}
