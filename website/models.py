@@ -1,7 +1,10 @@
 from app import app
+from hashlib import sha256
 from flask.ext.sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy(app)
+
+generate_slug = lambda name: '-'.join(name.lower().split(' '))
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -33,6 +36,7 @@ class User(db.Model):
 class Badge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True)
+    slug = db.Column(db.String(128), unique=True)
     description = db.Column(db.String(128))
     version = db.Column(db.String(50))
     criteria = db.Column(db.String(200))
@@ -47,7 +51,7 @@ class Badge(db.Model):
 
     def __init__(self, name, description, image, version, criteria,
                  issuer_origin, issuer_name, issuer_org=None,
-                 issuer_contact=None):
+                 issuer_contact=None, slug=None):
         self.name = name
         self.description = description
         self.image = image
@@ -58,9 +62,13 @@ class Badge(db.Model):
         self.issuer_org = issuer_org
         self.issuer_contact = issuer_contact
 
+        # use the mentioned slug or generate new slug if not given
+        self.slug = slug if self.slug else generate_slug(name)
+
 
 class EarnedBadge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(128), unique=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref=db.backref('user',
@@ -78,17 +86,21 @@ class EarnedBadge(db.Model):
 
     # if the badge has been issued or not
     status = db.Column(db.Boolean)
-    
-    def __init__(self, user, badge, salt,
+
+    def __init__(self, user, badge, salt, slug=None,
                  evidence=None, issued_on=None, expires=None):
         self.user = user
         self.badge = badge
         self.salt = salt
-        self.recipient = ''
+        self.recipient = 'sha256$%s' % sha256('%s%s' % (user.email,
+                                                        salt)).hexdigest()
         self.evidence = evidence
         self.issued_on = issued_on
         self.expires = expires
         self.status = False
+
+        # slug should be username-badge_slug
+        self.slug = '%s-%s' % (user.username, badge.slug)
 
     def create_assertion(self):
         assertion = {}

@@ -2,9 +2,10 @@ from app import app
 
 from flask import abort
 from flask import g
+from flask import make_response
 from flask import redirect
-from flask import request
 from flask import render_template
+from flask import request
 from flask import session
 from flask import url_for
 from flask.ext.login import current_user
@@ -117,3 +118,10 @@ def profile(username):
 @app.route('/people_search')
 def people_search(term):
     return 'something'
+
+@app.route('/assertion/<slug>')
+def assertion(slug):
+    eb = EarnedBadge.query.filter_by(slug=slug).first()
+    resp = make_response(json.dumps(eb.create_assertion()))
+    resp.headers['Content-Type'] = 'application/json'
+    return resp
