@@ -186,3 +186,8 @@ def assertion(slug):
 def badge(slug):
     b = Badge.query.filter_by(slug=slug).first()
     return render_template('badge.html', b=b)
+
+@app.route('/badges')
+def badges():
+    b = Badge.query.all()
+    return render_template('badges.html', badges=b)

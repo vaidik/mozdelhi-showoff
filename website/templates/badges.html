@@ -1,0 +1,22 @@
+{% extends "inc/layout.html" %}
+
+{% block page_title %}
+Badges
+{% endblock %}
+
+{% block content %}
+<section id="badges-table">
+  <table>
+  {% for b in badges %}
+    {% set row = loop.cycle(1, 2, 3) %}
+    {% if row == 1 %}<tr>{% endif %}
+    <td>
+      <a href="/badges/{{ b.slug }}"><img src="{{ b.image }}" alt="{{ b.name }}" class="project_image">
+      <h4>{{ b.name }}</h4></a>
+    </td>
+    {% if row == 3 %}</tr>{% endif %}
+  {% endfor %}
+  </table>
+</section>
+
+{% endblock %}

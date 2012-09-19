@@ -259,3 +259,8 @@ input:-moz-placeholder { text-transform: uppercase; }
 .profile p { margin: 0 }
 #about th,td { vertical-align: top; padding: 10px 0; }
 #profile-edit-button { display: block; margin-top: -40px; margin-left: 270px; }
+
+/* End Profiles */
+
+#badges-table td { text-align: center; padding: 16px; width: 160px; }
+#badges-table h4 { font-size: 1.3em; }
