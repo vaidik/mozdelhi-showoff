@@ -17,7 +17,7 @@
       <h2><a href="{{ b.badge.criteria }}">{{ b.badge.name }}</a></h2>
       <p>{{ b.badge.description }}</p>
       {% if status == False %}
-      <button class="accept-badge" onclick="accept_badge('{{ b.slug }}')">Take It</button> &nbsp; <a href="#" class="decline-badge">Leave It</a>
+      <button class="accept-badge" onclick="accept_badge('{{ b.slug }}')">Take It</button> &nbsp; <a href="#" class="decline-badge" onclick="decline_badge('{{ b.slug }}')">Leave It</a>
       {% endif %}
     </div>
   </article>
@@ -60,9 +60,24 @@ function accept_badge(slug) {
   )
 }
 
-function decline_badge() {
-  ;
-  // send decline request to /profile/badge/badge_id/decline
+function decline_badge(slug) {
+  var r = confirm("Are you sure you want to decline the '" + $('article[data-slug="' + slug + '"] h2 a').text() + "' badge?");
+  if (r == false) {
+    alert(1);
+    return;
+  }
+  $.post(
+    '/profile/earned-badges/pending/decline',
+    {
+      slug: slug,
+    },
+    function(data) {
+      data = JSON.parse(data);
+      if (data.status == 'OK') {
+        //remove from DOM completely
+        $('.row[data-slug="' + slug + '"]').slideUp('slow');
+      }
+    });
 }
 </script>
 {% endif %}

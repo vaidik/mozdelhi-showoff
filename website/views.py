@@ -99,23 +99,24 @@ def logout():
     return redirect(url_for('home'))
 
 @app.route('/profile/earned-badges')
-def badges(user=None, status=True):
+def earned_badges(user=None, status=True):
     if user is None:
         user = g.user
-    earned_badges = EarnedBadge.query.filter_by(user=user, status=status)
-    return render_template('badges.html', badges=earned_badges, status=status)
+    earned_badges = EarnedBadge.query.filter_by(user=user, status=status,
+                                                declined=False)
+    return render_template('earned_badges.html', badges=earned_badges, status=status)
 
 @app.route('/profile/<username>/earned-badges')
-def user_badges(username):
+def user_earned_badges(username):
     user = User.query.filter_by(username=username).first()
-    return badges(user=user)
+    return earned_badges(user=user)
 
 @app.route('/profile/earned-badges/pending')
-def badges_pending():
-    return badges(status=False)
+def earned_badges_pending():
+    return earned_badges(status=False)
 
 @app.route('/profile/earned-badges/pending/accept', methods=['POST'])
-def badges_pending_accept():
+def earned_badges_pending_accept():
     resp = {'status': 'OK'}
     if 'slug' not in request.form:
         resp['status'] = '400'
@@ -125,13 +126,25 @@ def badges_pending_accept():
     db.session.commit()
     return json.dumps(resp)
 
+@app.route('/profile/earned-badges/pending/decline', methods=['POST'])
+def earned_badges_pending_decline():
+    resp = {'status': 'OK'}
+    if 'slug' not in request.form:
+        resp['status'] = '400'
+
+    eb = EarnedBadge.query.filter_by(slug=request.form['slug']).first()
+    eb.declined = True
+    db.session.commit()
+    return json.dumps(resp)
+
 @app.route('/profile/<username>/earned-badges/pending')
-def user_badges_bending(username):
+@login_required
+def user_earned_badges_pending(username):
     if username != g.user.username:
         abort(400)
 
-    user = User.query.filter_by(username=username).first()
-    return badges(user=user, status=False)
+    user = User.query.filter_by(username=username, status=False).first()
+    return earned_badges(user=user, status=False)
 
 @app.route('/profile')
 def profile_me():
@@ -168,3 +181,8 @@ def assertion(slug):
     resp = make_response(json.dumps(eb.create_assertion()))
     resp.headers['Content-Type'] = 'application/json'
     return resp
+
+@app.route('/badges/<slug>')
+def badge(slug):
+    b = Badge.query.filter_by(slug=slug).first()
+    return render_template('badge.html', b=b)

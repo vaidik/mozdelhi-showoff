@@ -102,6 +102,9 @@ class EarnedBadge(db.Model):
     # if the badge has been issued or not
     status = db.Column(db.Boolean)
 
+    # if the badge has been declined or not
+    declined = db.Column(db.Boolean)
+
     def __init__(self, user, badge, salt, slug=None,
                  evidence=None, issued_on=None, expires=None):
         self.user = user
@@ -113,6 +116,7 @@ class EarnedBadge(db.Model):
         self.issued_on = issued_on
         self.expires = expires
         self.status = False
+        self.declined = False
 
         # slug should be username-badge_slug
         self.slug = '%s-%s' % (user.username, badge.slug)
