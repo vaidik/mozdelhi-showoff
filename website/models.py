@@ -49,21 +49,25 @@ class Badge(db.Model):
     issuer_org = db.Column(db.String(50))
     issuer_contact = db.Column(db.String(50))
 
-    def __init__(self, name, description, image, version, criteria,
+    def __init__(self, name, description, image, version,
                  issuer_origin, issuer_name, issuer_org=None,
                  issuer_contact=None, slug=None):
         self.name = name
         self.description = description
-        self.image = image
         self.version = version
-        self.criteria = criteria
-        self.issuer_origin = issuer_origin
+
+	# TO DO
+	# Add support for custom origins
+        self.issuer_origin = 'http://%s' % app.config['PERSONA_AUDIENCE']
         self.issuer_name = issuer_name
         self.issuer_org = issuer_org
         self.issuer_contact = issuer_contact
 
         # use the mentioned slug or generate new slug if not given
         self.slug = slug if self.slug else generate_slug(name)
+
+        self.criteria = '/badges/%s' % self.slug
+        self.image = '/static/img/badges/%s' % self.slug
 
 
 class EarnedBadge(db.Model):

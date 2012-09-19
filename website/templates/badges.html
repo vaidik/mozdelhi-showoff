@@ -19,7 +19,7 @@
       <h2><a href="{{ b.badge.criteria }}">{{ b.badge.name }}</a></h2>
       <p>{{ b.badge.description }}</p>
       {% if status == False %}
-      <button data-badge="{{ b.id }}" class="accept-badge" onclick="accept_badge({{ b.id }})">Take It</button> &nbsp; <a href="#" class="decline-badge">Leave It</a>
+      <button class="accept-badge" onclick="accept_badge('{{ b.slug }}')">Take It</button> &nbsp; <a href="#" class="decline-badge">Leave It</a>
       {% endif %}
     </div>
   </article>
@@ -29,12 +29,18 @@
 {% if status == False %}
 <script src="http://beta.openbadges.org/issuer.js"></script>
 <script type="text/javascript">
-function accept_badge(badge_id) {
+function accept_badge(slug) {
   OpenBadges.issue(
-    ['http://{{ config.PERSONA_AUDIENCE }}/assertions/' + badge_id],
+    ['http://{{ config.PERSONA_AUDIENCE }}/assertion/' + slug],
     function(errors, successes) {
-      alert(errors);
-      alert(successes);
+      if (errors) {
+        alert('Sorry! Something went wrong while Issuing this badge to you. You can file an issue about this at: https://github.com/vaidikkp/mozdelhi-showoff/issues/new.');
+      }
+			if (successes) {
+					;
+					// ajax request to /profile/earned-badges/<slug>/accept
+					$('.row[data-slug="' + slug + '"]').remove()
+			}
     }
   )
 }
