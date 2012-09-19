@@ -3,7 +3,7 @@
 {% block content %}
 <section id="badges">
   {% for b in badges %}
-  <article class="row">
+  <article class="row" data-slug="{{ b.slug }}">
     <div class="logo-links">
       <div class="project_image_wrap">
         <img src="{{ b.badge.image }}" alt="{{ b.badge.name }}" class="project_image">
@@ -27,7 +27,7 @@
 </section>
 
 {% if status == False %}
-<script src="http://beta.openbadges.org/issuer.js"></script>
+<!--<script src="http://beta.openbadges.org/issuer.js"></script>-->
 <script type="text/javascript">
 function accept_badge(slug) {
   OpenBadges.issue(
@@ -36,11 +36,22 @@ function accept_badge(slug) {
       if (errors) {
         alert('Sorry! Something went wrong while Issuing this badge to you. You can file an issue about this at: https://github.com/vaidikkp/mozdelhi-showoff/issues/new.');
       }
-			if (successes) {
-					;
-					// ajax request to /profile/earned-badges/<slug>/accept
-					$('.row[data-slug="' + slug + '"]').remove()
-			}
+      if (successes) {
+        ;
+        // ajax request to /profile/earned-badges/<slug>/accept
+        $.post(
+          '/profile/earned-badges/pending/accept',
+          {
+            slug: slug,
+          },
+          function(data) {
+            data = JSON.parse(data);
+            if (data.status == 'OK') {
+              //remove from DOM completely
+              $('.row[data-slug="' + slug + '"]').slideUp('slow');
+            }
+          });
+      }
     }
   )
 }

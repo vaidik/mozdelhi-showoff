@@ -99,6 +99,17 @@ def user_badges(username):
 def badges_pending():
     return badges(status=False)
 
+@app.route('/profile/earned-badges/pending/accept', methods=['POST'])
+def badges_pending_accept():
+    resp = {'status': 'OK'}
+    if 'slug' not in request.form:
+        resp['status'] = '400'
+
+    eb = EarnedBadge.query.filter_by(slug=request.form['slug']).first()
+    eb.status = True
+    db.session.commit()
+    return json.dumps(resp)
+
 @app.route('/profile/<username>/earned-badges/pending')
 def user_badges_bending(username):
     if username != g.user.username:
