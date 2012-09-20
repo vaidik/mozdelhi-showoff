@@ -17,7 +17,7 @@
       <h2><a href="{{ b.badge.criteria }}">{{ b.badge.name }}</a></h2>
       <p>{{ b.badge.description }}</p>
       {% if status == False %}
-      <button class="accept-badge" onclick="accept_badge('{{ b.slug }}')">Take It</button> &nbsp; <a href="#" class="decline-badge" onclick="decline_badge('{{ b.slug }}')">Leave It</a>
+      <button class="accept-badge" onclick="accept_badge('{{ b.slug }}')">Accept It</button> &nbsp; <a href="#" class="decline-badge" onclick="decline_badge('{{ b.slug }}')">Leave It</a>
       {% endif %}
     </div>
   </article>
