@@ -33,7 +33,10 @@ def load_user(email):
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    if not current_user.is_authenticated():
+        return redirect(url_for('login'))
+
+    return redirect(url_for('people'))
 
 @app.route('/about')
 def about():
