@@ -6,3 +6,6 @@ PERSONA_AUDIENCE = 'localhost'
 
 # Secret key
 SECRET_KEY = 'TFFL79MFO9TMZUOJ0RQ9'
+
+# Site Title
+SITE_TITLE = 'Mozilla Delhi/NCR'

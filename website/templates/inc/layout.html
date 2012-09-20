@@ -57,6 +57,35 @@
         <h1 id="site-title">Mozilla Delhi/NCR</h1>
         <h2>the community shows off here</h1>
         <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
+        {% set menu = [
+            {
+                'name': 'About',
+                'path': '/about',
+                'current_on_paths':
+                    [
+                        'about',
+                    ],
+            },
+            {
+                'name': 'People',
+                'path': '/people',
+                'current_on_paths':
+                    [
+                        'people',
+                        'profile',
+                    ],
+            },
+            {
+                'name': 'Badges',
+                'path': '/badges',
+                'current_on_paths':
+                    [
+                        'badges',
+                    ],
+            },
+        ] %}
+        {% from 'macros.html' import nav with context %}
+        {{ nav(menu) }}
         <div id="user">
         {% if g.user.is_authenticated() %}
           <ul>

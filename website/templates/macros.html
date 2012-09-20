@@ -23,3 +23,16 @@
     </div>
   </article>
 {% endmacro %}
+
+{% macro nav(menu=None) %}
+<nav id="nav-main" role="navigation">
+    <ul>
+        <!--<li><a class="" href="/en-US/">Home</a></li>-->
+        {% for item in menu %}
+        <li>
+            <a {% if request.path.split('/')[1] in item.current_on_paths %}class="current"{% endif %} href="{{ item.path }}">{{ item.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</nav>
+{% endmacro %}

@@ -100,6 +100,41 @@ a:hover, a:focus, a:active { color: #20679E; text-decoration: underline; }
     font-size: 1.8em;
 }
 
+#masthead nav {
+    float: right;
+    margin-right: 16px;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-family: 'Open Sans',sans-serif;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+#masthead nav ul li {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0;
+}
+
+#masthead nav ul li a,
+#masthead nav ul li a:link,
+#masthead nav ul li a:visited {
+    color: #41596B;
+}
+
+#masthead nav ul li a, #masthead nav ul li b {
+    display: inline-block;
+    padding: 12px;
+    font-weight: normal;
+}
+
+#masthead nav ul li b, #masthead nav ul li .current {
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+    background-image: url(/static/img/menu-current.png);
+}
+
 #site-title {
     font-size: 4.5em;
     margin: 0 0 .15em -5px;
@@ -108,9 +143,12 @@ a:hover, a:focus, a:active { color: #20679E; text-decoration: underline; }
 
 #user {
     position: absolute;
-    top: 8px;
+    top: 0px;
     right: 180px;
     text-align: right;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 12px;
 }
 
 #user ul { list-style: none; }
@@ -197,6 +235,8 @@ input:-moz-placeholder { text-transform: uppercase; }
 
 #nav-meta ul { list-style: none; }
 #nav-meta a { font-family: "Open Sans Regular", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif; }
+
+
 
 /* Badges Styles */
 #badges {
