@@ -36,3 +36,24 @@
     </ul>
 </nav>
 {% endmacro %}
+
+{% macro people_print(people) %}
+  <table>
+  {% for p in people %}
+    {% set row = loop.cycle(1, 2) %}
+    {% if row == 1 %}<tr>{% endif %}
+    <td>
+      <a href="/profile/{{ p.username }}" class="people-btn">
+        <img src="{{ p.image }}" alt="{{ p.first_name }} {{ p.last_name }}" class="profile_img">
+        <div class="details">
+          <div class="name">{{ p.first_name }} {{ p.last_name }}</div>
+          <div>Username: {{ p.username }}</div>
+          {% if p.github %}<div>Github: {{ p.github }}</div>{% endif %}
+          {% if p.irc_nick %}<div>IRC: {{ p.irc_nick }}</div>{% endif %}
+        </div>
+      </a>
+    </td>
+    {% if row == 2 %}</tr>{% endif %}
+  {% endfor %}
+  </table>
+{% endmacro %}

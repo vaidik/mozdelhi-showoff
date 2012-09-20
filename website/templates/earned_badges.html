@@ -63,7 +63,6 @@ function accept_badge(slug) {
 function decline_badge(slug) {
   var r = confirm("Are you sure you want to decline the '" + $('article[data-slug="' + slug + '"] h2 a').text() + "' badge?");
   if (r == false) {
-    alert(1);
     return;
   }
   $.post(

@@ -35,6 +35,10 @@ def load_user(email):
 def home():
     return render_template('index.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
@@ -97,6 +101,11 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+@app.route('/people')
+def people():
+    users = User.query.all()
+    return render_template('people.html', people=users)
 
 @app.route('/profile/earned-badges')
 def earned_badges(user=None, status=True):
@@ -168,7 +177,7 @@ def profile_edit():
 @app.route('/profile/<username>')
 def profile(username):
     u = User.query.filter_by(username=username).first()
-    eb = EarnedBadge.query.filter_by(user=u, status=False).all()
+    eb = EarnedBadge.query.filter_by(user=u, status=True).all()
     return render_template('view_profile.html', user=u, badges=eb)
 
 @app.route('/people_search')
@@ -185,7 +194,11 @@ def assertion(slug):
 @app.route('/badges/<slug>')
 def badge(slug):
     b = Badge.query.filter_by(slug=slug).first()
-    return render_template('badge.html', b=b)
+    eb = EarnedBadge.query.filter_by(badge=b, status=True).all()
+    people = []
+    for e in eb:
+        people.append(e.user)
+    return render_template('badge.html', b=b, people=people)
 
 @app.route('/badges')
 def badges():

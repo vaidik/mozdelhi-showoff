@@ -4,7 +4,10 @@
 
 {% block content %}
 {% if g.user.is_authenticated() and user.username == g.user.username %}
-<div id="profile-edit-button"><a class="button" href="/profile/edit">Edit</a></div>
+<div id="profile-edit-button">
+    <a class="button" href="/profile/edit">Edit</a>
+    <a class="button" href="/profile/earned-badges/pending">Pending Badges</a>
+</div>
 {% endif %}
 <table class="profile">
     {% if g.user.is_authenticated() %}
@@ -48,7 +51,7 @@
 </table>
 <h3>Achievements</h3>
 {% from 'macros.html' import print_badge %}
-{% if badges == None %}
+{% if not badges %}
 <p>No badges achieved yet.</p>
 {% else %}
 {% for b in badges %}

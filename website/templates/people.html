@@ -1,0 +1,13 @@
+{% extends "inc/layout.html" %}
+
+{% block page_title %}
+People
+{% endblock %}
+
+{% block content %}
+<section id="people-table">
+  {% from 'macros.html' import people_print %}
+  {{ people_print(people) }}
+</section>
+
+{% endblock %}
