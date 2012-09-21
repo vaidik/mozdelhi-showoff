@@ -16,6 +16,8 @@ from flask.ext.login import LoginManager
 
 from models import *
 
+import sqlalchemy
+
 import requests
 import json
 
@@ -64,13 +66,34 @@ def login():
         if user is not None:
             login_user(user)
         else:
-            session['register'] = True
-            session['email'] = body['email']
-            return redirect('/register')
+            session['waitlist_email'] = body['email']
+            return redirect('/waitlist')
+            #session['register'] = True
+            #session['email'] = body['email']
+            #return redirect('/register')
     else:
         return 'some error occurred'
 
     return redirect('/')
+
+@app.route('/waitlist', methods=['GET', 'POST'])
+def waitlist():
+    if request.method == 'GET':
+        return render_template('register.html', email=session['waitlist_email'])
+
+    if not session.get('waitlist_email', None):
+        return redirect('/login')
+
+    done = False
+    try:
+        w = WaitList(session['waitlist_email'])
+        db.session.add(w)
+        db.session.commit()
+    except sqlalchemy.exc.IntegrityError:
+        done = True
+
+    del session['waitlist_email']
+    return render_template('register_thanks.html', done=done)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

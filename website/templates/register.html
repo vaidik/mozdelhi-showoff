@@ -1,0 +1,11 @@
+{% extends "inc/layout.html" %}
+
+{% block content %}
+<div style="text-align: center;">
+  <h3 style="margin-bottom: 20px;">Registration is invite only right now.</h3>
+  <p>We are working on this platform and it is not available for everyone yet. But, you can put yourself in the waitlist and we will get in touch as soon as we have it ready to show you.</p>
+  <form action="/waitlist" method="post">
+    <input type="submit" value="Yeah! Waitlist me!">
+  </form>
+</div>
+{% endblock %}

@@ -1,6 +1,7 @@
 from app import app
 from hashlib import sha256
 from flask.ext.sqlalchemy import SQLAlchemy
+from time import time
 
 db = SQLAlchemy(app)
 
@@ -146,6 +147,16 @@ class EarnedBadge(db.Model):
         assertion.update(badge=badge)
 
         return assertion
+
+
+class WaitList(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True)
+    timestamp = db.Column(db.String(20))
+
+    def __init__(self, email):
+        self.email = email
+        self.timestamp = time()
 
 '''
 class Testing(db.Model):

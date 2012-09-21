@@ -1,0 +1,13 @@
+{% extends "inc/layout.html" %}
+
+{% block content %}
+<div style="text-align: center;">
+  {% if not done %}
+  <h3 style="margin-bottom: 20px;">Thanks!</h3>
+  <p>We have added you in the waitlist and we will get back to you ASAP. :)</p>
+  {% else %}
+  <h3 style="margin-bottom: 20px;">Keep calm and cheer it on!</h3>
+  <p>We already have you in the waiting list. And we will get back to you ASAP.</p>
+  {% endif %}
+</div>
+{% endblock %}
