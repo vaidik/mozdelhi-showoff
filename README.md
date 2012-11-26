@@ -11,4 +11,4 @@ community achievements even at local levels.
 
 ## TODO
 
-* Resstart this project with using Mozilla's Django template [Playdoh](http://github.com/mozilla/playdoh)].
+* Restart this project with using Mozilla's Django template [Playdoh](http://github.com/mozilla/playdoh).
